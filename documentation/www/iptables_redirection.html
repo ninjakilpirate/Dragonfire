@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="linux.html">Linux</a></li>
+    <li class="breadcrumb-item active" aria-current="page">IPTables Redirection</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>IPTables Redirection</h3>
+  <div class="row">
+    <div class="col-md-8">
+   	  <p>Redirecting though unix targets using IPTables</p>
+
+      
+       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With:  *NIX 
+	  <br>Requires:  IPTables running</br></div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+        <p>The purpose of IPTables redirection is to send traffic to another host without generating SSH Logon logs. </p>
+       <div class="alert alert-danger" role="alert">
+       <p>If IPTables is not running and you attempt to query the rules it will start the service.
+       </div>	  
+
+
+  <div class="panel-group">
+      <div class="panel panel-info">
+    <div class="panel-heading">Setting up redirection</div>
+      <div class="panel-body">
+   <div class="alert alert-warning" role="alert">
+     <p>Before running any commands below run <code>lsmod | grep ip</code> to verify IPTables is running
+     </div>
+     <p>First Verify what rules are in place
+     <br><code>iptables -L</code>
+     <p>Verify that the targert can forward traffic
+     <br><code>cat /proc/sys/net/ipv4/ip_forward </code> 
+     <p>If zero, echo a 1 into that file
+	 <br><code>echo 1 > /proc/sys/net/ipv4/ip_forward</code>
+     <p>Put in the rules
+     <br><code>iptables -t nat -A POSTROUTING -j MASQUERADE</code>
+     <br><code>iptables -t nat -A PREROUTING -s [SOURCE IP] -p tcp --dport [DESTINATION PORT] -j DNAT --to-destination [DESTINATION IP]:[DESTINATION PORT]</code>
+ </div>
+</div>
+
+<div class="panel-group">
+    <div class="panel panel-info">
+  <div class="panel-heading">Removing redirection</div>
+    <div class="panel-body">
+   <p>Delete the rules
+   <br><code>iptables -t nat -D POSTROUTING -j MASQUERADE</code>
+   <br><code>iptables -t nat -D PREROUTING -s [SOURCE IP] -p tcp --dport [DESTINATION PORT] -j DNAT --to-destination [DESTINATION IP]:[DESTINATION PORT]</code>
+   <p>Verify they are gone by using <code>iptables -L -t nat</code>
+</div>
+</div>
+
+   </div>
+</div>
+
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

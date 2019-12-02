@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->
+
+<!-- begin breadcrumb !-->
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+	    <li class="breadcrumb-item"><a href="windows.html">Windows</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Networking</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>
+<!-- end breadcrumb !-->
+
+
+<!-- begin page contents !-->
+<div class="container">
+  <h3>Networking</h3>
+  <div class="row">
+    <div class="col-md-8">
+
+	  <p>Basic Networking</p>
+	  <p>Firewall</p>
+
+
+       </div>
+    <!-- begin information box !-->
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With:  Windows
+	  <br>Requires: Keyboard</br></div>
+     </div>
+
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->
+</div>
+
+<!-- begin main body !-->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <h3>Basic Networking</h3>
+        <p>A variety of commands can be used to gather information about the box you are currently on.</p>
+
+        List network interfaces on the box<br />
+        <code>ipconfig /all</code>
+        <br>View ARP cache<br />
+        <code>arp -a</code>
+        <br>Ping via Powershell<br />
+        <code>test-Connection [IP]</code>
+        <br>Add a static IP address to an interface<br />
+        <code>netsh interface ip set address name="Local Area Connection" static [ip] [netmask]] [gateway]</code>
+			</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+          <h3>Firewall</h3>
+          <p>netsh can be used to perform queries and manage the firewall.</p>
+          <br />View firewall config (XP+)<br />
+          <code>netsh firewall show config</code>
+          <br> View firewall Rules (Vista+)<br />
+          <code>netsh advfirewall firewall show rule name=all</code>
+          <br> View Current Profile (Vista+)<br />
+          <code>netsh advfirewall show currentprofile</code>
+          <br> Enable Remote Desktop (Vista+)<br />
+          <code>netsh advfirewall firewall set rule group="remote desktop" new enable=Yes</code>
+          <br> Open a specific port (Vista+)<br />
+          <code>netsh advfirewall firewall add rule name="allow telnet" dir=in action=allow protocol=TCP localport=23</code>
+          <br> Delete a rule (Vista+)<br />
+          <code>netsh advfirewall firewall delete rule name="allow telnet"</code>
+          <br> Disable logging of dropped packets (Vista+)<br />
+          <code>netsh firewall set logging droppedpackets=disable</code>
+    </div>
+	</div>
+
+  <div class="row">
+    <div class="col-md-12">
+        <h3>Tunneling</h3>
+        <p>netsh can be used to create a port relay through a Windows box.</p>
+        <br />Port relay through a box to another box (Win7 or later supports v4tov4, v6tov6, v4tov6 and v6tov4)<br />
+        <code>netsh interface portproxy add v4tov4 listenport=[LPORT] listenaddress=0.0.0.0 connectport=[RPORT] connectaddress=[RHOST]</code>
+
+  </div>
+</div>
+
+
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

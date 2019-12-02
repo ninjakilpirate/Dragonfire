@@ -1,0 +1,17 @@
+
+################################################
+#                                              #
+#   FOR EDUCATION AND TRAINING PURPOSES ONLY   #
+#                                              #
+#                                              #
+#                                              #
+################################################
+
+
+This script assists in the management of SSH multiplexing.
+
+FEATURES
+Pastable line for initial connection if required.
+Pastable line for additional connections.
+Tunnel Creation and Removal
+SCP integration for easy file uploads and downloads

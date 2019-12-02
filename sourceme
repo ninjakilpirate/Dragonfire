@@ -1,0 +1,3 @@
+PATH=$PATH:/dragonfire/bin
+alias gd=get-documentation
+

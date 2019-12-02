@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+
+   
+  
+  
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="linux.html">Linux</a></li>
+    <li class="breadcrumb-item active" aria-current="page">SSH Survey Script</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>SSH Survey Script</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>Basic situational awareness script when connecting via SSH.  Uses Multiplexing so no additional authenications are required and stdout can be redirected locally.</p>
+	
+       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With: Linux
+	  <br>Requires: ssh service, credentials</br>
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>SSH Survey Script</h3>    
+    After connecting to a target via SSH, the SSH Survey Script will gather valuable situational awareness information quickly, without additional authenication on target.  Pastable line for the SSH Survey will be created
+	for you if you are using the <a href="ssh_helper.html">ssh_helper</a> to create your ssh sessions.
+	<br>Recommend redirecting stdout to a local file and then viewing the output.
+	
+    <div class="alert alert-danger" role="alert">
+    <p>SSH Survey does not check EVERYTHING you might want to see.  It not running a command in no excuse for poor situational awareness.</p>
+    </div>	
+
+
+	<p><br><h4>Usage</h4>
+	<code>/dragonfire/bin/ssh_survey/ssh_survey.sh [USER] [IP] [CONTROL_FILE]</code>
+	<br>This will run the survey and dump data all over the screen.  You should probably redirect this output.  Full details of everything that run, as well as their headers (so you can search) are below.
+<br><br>
+	<div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">What does it run?</div>
+      <div class="panel-body">
+	<br><br>PLACEHOLDER
+	  </div>
+    </div>
+	</div><!-- end of 'row' tag !-->
+	</div><!-- end of main body!-->
+   <br><br><br><br>
+</div>
+</div>
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

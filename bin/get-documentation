@@ -1,0 +1,22 @@
+#!/bin/bash
+#cd /dragonfire/documentation/www
+#python -m SimpleHTTPServer 8000
+
+
+if [  -z "$1"  ];then
+    firefox /dragonfire/documentation/www/index.html &
+else
+
+    case "$1" in
+
+
+    linux) firefox /dragonfire/documentation/www/linux.html &
+       ;;
+    windows) firefox /dragonfire/documentation/www/windows.html &
+         ;;
+    other) firefox /dragonfire/documentation/www/other.html &
+       ;;
+    misc) firefox /dragonfire/documentation/www/misc.html &
+       ;;
+    esac
+fi

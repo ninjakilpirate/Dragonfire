@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="linux.html">Linux</a></li>
+    <li class="breadcrumb-item active" aria-current="page">SSH Helper</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>SSH Helper</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>This script assists in the management of SSH multiplexing.</p>
+	  <p>FEATURES<p>
+      <p>Pastable line for initial connection if required.
+      <p>Pastable line for additional connections.
+      <p>Tunnel Creation and Removal
+      <p>SCP integration for easy file uploads and downloads
+
+	  
+	  
+	  
+       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With: Linux
+	  <br>Requires: ssh service, credentials</br>
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>SSH Helper</h3>    
+    <div class="alert alert-danger" role="alert">
+    <p>This script makes SSH Multiplexing easier, it is not a replacement for reading and understanding the main <a href="ssh.html">SSH Usage</a> page.</p>
+    </div>	
+
+	
+	Use this helper script to quickly create an SSH Multiplex session, upload and download files easily, and manage tunnels.  You can start the script BEFORE you have your multiplex session created, it will make pastables for you.
+	Using the script is no different than running commands manually, as detailed on the <a href="ssh.html">SSH Usage</a> page,
+    however it's useful anytime you have to create tunnels, upload or download many files, or require several terminal windows.	
+	<p><br>Additionally, this script will print each command it runs before it executes so you can verify the command and copy it for later if needed.
+	
+	
+    
+
+	
+	
+	
+	<div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Usage</div>
+      <div class="panel-body">
+	  <p>Usage: Running with no arguments will prompt for entry.  There is no prompt for port, you must enter it as an argument if it is not 22.
+	  <br><code>python /dragonfire/bin/ssh_helper/ssh_helper.py</code>
+      <p><code>-u : username</code>
+      <p><code>-p : port (default 22)</code>
+      <p><code>-t : target address</code>
+      <p><code>-h : help</code>
+
+	
+	  </div>
+    </div>
+	</div><!-- end of 'row' tag !-->
+	</div><!-- end of main body!-->
+   <br><br><br><br>
+</div>
+</div>
+
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

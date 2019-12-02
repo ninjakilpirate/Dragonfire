@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="linux.html">Linux</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Corrupt Witness</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>Corrupt Witness</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>Create binary files w/ build in 'grepouts' to remove dirty words from ps, netstat, ss, and strings output </p>
+	  <h4>Table of Contents</h4>
+	  <p>Usage
+	  <p>
+	  <p>
+	  <p>
+      <p>
+       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With: Linux
+	  <br>Requires: </br>
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>Corrupt Witness</h3>    
+    Corrupt Witness is just a basic grep out.  You give it some strings, it gives you replacement binaries for ps, netstat, ss, and strings that will run a grep -v with them, removing your strings from the output.
+	
+    
+
+	<p><br><h4>Usage</h4>
+	<code>/dragonfire/bin/corrupt_witness/corrupt_witness.py</code>
+	<br>This will start corrupt_witness, select the binaries you want to build (normally all of them) and then choose 'Finished.'
+    <br><br>Next, enter the strings you with to remove from the output.  For example, if you want to remove 'bash' and references to port 22 in netstat you would enter 'bash,:22'   You should attempt to be as specific as possible when writing your string matches.  For ports I use <code>:22</code> instead of just <code>22</code> otherwise everything with '22' in it would be removed, which would likely also include many valid pids in the process list, etc.
+	<br><br>Once finished, the files will be written to /dragonfire/bin/corrupt_witness/output.  This folder contains the modified binaries as well as install directions.  The install directions include the 'mv' commands you'll need to 'back-up' the legitimate on-box binaries.  The modified binaries call these real binaries, so they must be placed exactly where the install directions indicate.  
+	<br><br>After renaming the on-box binaries, place the modified binaries into the expected location.   /bin/ps, /bin/netstat, /bin/ss, and /usr/bin/strings    Of course these are the expected locations, you may have to adjust if binaries are in a non-standard location. 
+	<br><br>Now the binaries should be working.  Run a couple tests to confirm your output is stripped.  You can directly call the 'backed-up' binaries if you want a comparison.   
+	<br><br>To undo, move the 'backed-up' binaries over the modified binaries using the commands in the install text.
+	
+	
+    
+    </div>
+	</div><!-- end of 'row' tag !-->
+	</div><!-- end of main body!-->
+   <br><br><br><br>
+</div>
+</div>
+
+
+
+
+
+
+
+
+	
+	
+</body>
+</html>

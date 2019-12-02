@@ -1,0 +1,6 @@
+$x="\\.\root\subscription:__EventFilter.Name='Filter'"
+([wmi]$x).Delete()
+$x="\\.\root\subscription:CommandLineEventConsumer.Name='Consumer'"
+([wmi]$x).Delete()
+$x='\\.\root\subscription:__FilterToConsumerBinding.Consumer="\\\\.\\root\\subscription:CommandLineEventConsumer.Name=\"Consumer\"",Filter="\\\\.\\root\\subscription:__EventFilter.Name=\"Filter\""'
+([wmi]$x).Delete()

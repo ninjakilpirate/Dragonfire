@@ -1,0 +1,99 @@
+#!/bin/bash
+#BEGIN COMMENTS
+: <<'COMMENTS'
+
+
+
+COMMENTS
+#END OF COMMENTS
+
+
+if [  -z "$1"  ]
+   then
+   echo "Usage: ./ssh_survey [USER] [IP] [CONTROL_FILE] [PORT]"
+   exit
+   fi
+if [  -z "$2"   ]
+   then
+   echo "Usage: ./ssh_survey [USER] [IP] [CONTROL_FILE] [PORT]"
+   exit
+   fi
+if [  -z "$3"  ]
+   then
+   echo "Usage: ./ssh_survey [USER] [IP] [CONTROL_FILE] [PORT]"
+   exit
+   fi
+
+if [  ! -e $3  ]; then
+    echo "ControlPath $3 not found...exiting"
+    exit
+fi
+
+
+echo -e "\n\n---Logged On Users---" 
+ssh $1@$2 -S $3 w 
+
+echo -e "\n\n---OS Info---"  
+ssh $1@$2 -S $3 uname -a 
+ssh $1@$2 -S $3 date 
+ssh $1@$2 -S $3 date -u 
+
+echo -e "\n\n---Network Configurations---" 
+ssh $1@$2 -S $3 ifconfig;route;arp -a
+
+echo -e "\n\n---Current Connections (Netstat)---" 
+ssh $1@$2 -S $3 netstat -antp
+
+echo -e "\n\n---Process Information---" 
+ssh $1@$2 -S $3 ps -ef --sort="start_time"
+
+echo -e "\n\n---Passwd File---" 
+ssh $1@$2 -S $3 cat /etc/passwd
+
+echo -e "\n\n---Shadow File---"
+ssh $1@$2 -S $3 cat /etc/shadow
+
+echo -e "\n\n---File Location---"
+echo -e "\n Directory Listing of /"
+ssh $1@$2 -S $3 ls -lart /
+echo -e "\n Directory Listing of /root"
+ssh $1@$2 -S $3 ls -lart /root
+echo -e "\n Directory Listing of /var/log"
+ssh $1@$2 -S $3 ls -lart /var/log
+echo -e "\n Directory Listing of /home"
+ssh $1@$2 -S $3 ls -lart /home
+echo -e "\n Directory Listing of /tmp"
+ssh $1@$2 -S $3 ls -lart /tmp
+echo -e "\n Directory Listing of ./"
+ssh $1@$2 -S $3 ls -lart ./
+
+echo -e "\n\n---History Files---"
+ssh $1@$2 -S $3 'for i in `ls /home`; do echo "==========$i history file============" && cat /home/$i/.bash_history; done' 
+
+echo -e "\n\n---Releases---"
+ssh $1@$2 -S $3 'for i in `ls /etc/*-release`; do cat $i; done' 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

