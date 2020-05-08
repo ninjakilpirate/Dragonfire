@@ -255,3 +255,40 @@ Traceback (most recent call last):
   File "/dragonfire/bin/dfconsole/Modules/instantblue_.py", line 40, in run
     reset_auditpol=self.resetauditpol.value
 AttributeError: create instance has no attribute 'resetauditpol'
+ERROR:root:Module failsafeCallback has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafeCallback_.py", line 41, in run
+    CreateName=self.CreateName.value
+AttributeError: create instance has no attribute 'CreateName'
+ERROR:root:Module failsafeCallback has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafeCallback_.py", line 72, in run
+    ''' % (filter,consumer,FailName,FailName,encodedmessage)
+TypeError: not all arguments converted during string formatting
+ERROR:root:Module failsafeCallback has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafeCallback_.py", line 72, in run
+    ''' % (filter,consumer,FailName,FailName,encodedmessage)
+TypeError: not all arguments converted during string formatting
+ERROR:root:Module failsafeCallback has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafeCallback_.py", line 75, in run
+    ''' % (filter,consumer,FailName,FailName,encodedmessage)
+TypeError: not all arguments converted during string formatting
+ERROR:root:Module failsafeCallback has thrown an exception
+Traceback (most recent call last):
+  File "./dfconsole.py", line 312, in main
+    globals()[current].run()
+  File "/dragonfire/bin/dfconsole/Modules/failsafeCallback_.py", line 54, in run
+    exit()
+  File "/usr/lib/python2.7/site.py", line 366, in __call__
+    raise SystemExit(code)
+SystemExit: None

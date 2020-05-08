@@ -50,10 +50,10 @@ def connections(s,startdir,key):
                     c.send("Preparing to send file")
                     time.sleep(1)
                     f = open (req[1], "rb")
-                    l = f.read(1024)
-                    while (l):
-                        c.send(l)
+                    while True:
                         l = f.read(1024)
+                        if not l: break
+                        c.send(l)
                     f.close()
                     time.sleep(5)
                     continue
@@ -66,10 +66,10 @@ def connections(s,startdir,key):
                 req=req.split(' ')
                 f = open(req[2],'wb')
                 time.sleep(1)
-                l=c.recv(1024)
-                while len(l)==1024:
+                while True:
+                    l=c.recv(1024)
+                    if not l: break
                     f.write(l)
-                    l = c.recv(1024)
                 f.write(l)
                 f.close()
                 time.sleep(3)
@@ -108,7 +108,7 @@ def connections(s,startdir,key):
 
 def main():
     key="key"    
-    port=8082
+    port=8080
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     start_dir=os.getcwd()
     s.bind(('0.0.0.0', port))

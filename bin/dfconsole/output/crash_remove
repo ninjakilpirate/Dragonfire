@@ -1,8 +1,0 @@
-
-$x="\\.\root\subscription:__EventFilter.Name='ServiceFilter'"
-([wmi]$x).Delete() 
-$x="\\.\root\subscription:CommandLineEventConsumer.Name='ServiceConsumer'"
-([wmi]$x).Delete()
-$x='\\.\root\subscription:__FilterToConsumerBinding.Consumer="\\\\.\\root\\subscription:CommandLineEventConsumer.Name=\"ServiceConsumer\"",Filter="\\\\.\\root\\subscription:__EventFilter.Name=\"ServiceFilter\""' 
-([wmi]$x).Delete() 
-auditpol /set /subcategory:"Logon" /success:enable /failure:disable

