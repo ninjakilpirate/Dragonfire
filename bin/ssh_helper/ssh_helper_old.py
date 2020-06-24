@@ -18,7 +18,6 @@ def show_help():
     print "-u : username"
     print "-p : port (default 22)"
     print "-t : target address"
-    print "-s : control path location"
     print "-h : this help file"
 
 
@@ -44,9 +43,8 @@ def menu():
         print ("2.  Remove Tunnel")
         print ("3.  Upload File to Target")
         print ("4.  Download File from Target")
-        print ("5.  List Tunnels")
         selection=raw_input()
-        if selection=="1" or selection=="2" or selection=="3" or selection=="4" or selection=="5":
+        if selection=="1" or selection=="2" or selection=="3" or selection=="4":
             valid=True
         else:
             print ("Invalid Selection, please try again")
@@ -54,7 +52,7 @@ def menu():
     return selection
 
 
-def create_tunnel(user,controlpath,port,tgt,tunnels):
+def create_tunnel(user,controlpath,port,tgt):
     if not os.path.exists(controlpath):
         print "\n\nControl Path doesn't exist..."
         time.sleep(1)
@@ -71,35 +69,18 @@ def create_tunnel(user,controlpath,port,tgt,tunnels):
         prochandle = subprocess.Popen(tunnel_command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         results=prochandle.communicate()[0]
         print ("\n\nTunnel Created.")
-        tunnels.append(tunnel)
-        return tunnels
     except:
         print ("\n\nSomething went wrong, tunnel not created...")
 
-def remove_tunnel(user,controlpath,port,tgt,tunnels):
+def remove_tunnel(user,controlpath,port,tgt):
     if not os.path.exists(controlpath):
         print "\n\nControl Path doesn't exist..."
         time.sleep(1)
         return 0
     print("\n\n\nTunnel to remove:")
-    
-    for i, value in enumerate(tunnels):
-        index=i+1
-        print str(index) + ". "+value 
+    print("Example: L8080:10.0.0.2:8080")
     tunnel=raw_input()
-    try:
-        tunnel=int(tunnel)
-        if (tunnel > len(tunnels)) or (tunnel < 1):
-            print "Invalid Selection"
-            time.sleep(1)
-            return tunnels
-        tunnel=tunnel-1
-        remove_tunnel=tunnels[tunnel]
-    except:
-        print "Invalid Selection"
-        time.sleep(1)
-        return tunnels        
-    tunnel_command="ssh -O cancel -" + remove_tunnel + " -S " + controlpath + " " + user + "@" + tgt
+    tunnel_command="ssh -O cancel -" + tunnel + " -S " + controlpath + " " + user + "@" + tgt
     print ("\n\nAbout to delete tunnel....")
     print tunnel_command
     print ("Press ENTER to continue, or CTRL+C to bail\n")
@@ -108,11 +89,8 @@ def remove_tunnel(user,controlpath,port,tgt,tunnels):
         prochandle = subprocess.Popen(tunnel_command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         results=prochandle.communicate()[0]
         print ("\n\nTunnel removed.")
-        tunnels.remove(tunnels[tunnel])
-        return tunnels
     except:
         print ("\n\nSomething went wrong, tunnel not created...")
-        return tunnels
 
 
 def upload_file(user,controlpath,port,tgt):
@@ -159,22 +137,14 @@ def download_file(user,controlpath,port,tgt):
     except:
         print ("\n\nSomething went wrong, file probably not uploaded")
 
-def list_tunnels(tunnels):
-    print "\n\n\n"
-    if len(tunnels)==0:
-        print "No Tunnels"
-    for i in tunnels:
-        print i
-    print "\n\nPress enter to continue"
-    x=raw_input()
-    return 0
+
 
 def main(argv):
     user=''
     controlpath=''
     tgt=''
     port="22"
-    tunnels=[]
+
     opts, args = getopt.getopt(argv,"hu:p:t:s:",["target=","port=","user=","port=","controlpath="])
 
     for opt, arg in opts:
@@ -204,17 +174,14 @@ def main(argv):
     while True:
         selection=menu()     
         if selection== "1":
-            tunnels=create_tunnel(user,controlpath,port,tgt,tunnels)
+            create_tunnel(user,controlpath,port,tgt)
         if selection=="2":
-            remove_tunnel(user,controlpath,port,tgt,tunnels)
+            remove_tunnel(user,controlpath,port,tgt)
         if selection=="3":
             upload_file(user,controlpath,port,tgt)
         if selection=="4":
             download_file(user,controlpath,port,tgt)
-        if selection=="5":
-            list_tunnels(tunnels)
         show_settings(user,controlpath,port,tgt)
-
 
 
 
