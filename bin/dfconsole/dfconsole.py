@@ -280,7 +280,10 @@ def main(argv):
                 if current=="":
                     print "\nNo module selected"
                     continue
-                option=command[2]
+                set_options=' '
+                set_options=set_options.join(command[2:])
+                #option=command[2]
+                option=set_options
                 try:
                     argument=command[1]
                     inner=getattr(globals()[current],argument)
