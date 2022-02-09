@@ -75,11 +75,11 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
 ''' % (CreateName,filter,consumer,consumer,filter)
         
         if output=='':
-            print data
-            print "\n"
-            print "To Remove"
-            print "---------------------------------"
-            print remove_data
+            print(data)
+            print("\n")
+            print("To Remove")
+            print("---------------------------------")
+            print(remove_data)
             return
         else:
             output="output/"+output
@@ -90,7 +90,7 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
             f = open(output,'w')
             f.write(remove_data)
             f.close()
-            print "Files have been written..."
+            print("Files have been written...")
             return
 
 

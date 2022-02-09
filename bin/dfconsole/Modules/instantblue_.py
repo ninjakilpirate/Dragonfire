@@ -70,18 +70,18 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
 ([wmi]$x).Delete() 
 ''' % (filter,consumer,consumer,filter)
         if (reset_auditpol!="yes" and reset_auditpol!="no"):
-            print "Enter 'yes' or 'no' for 'reset_auditpol'"
+            print("Enter 'yes' or 'no' for 'reset_auditpol'")
             return
         else:
             if reset_auditpol=="yes":
                 remove_data=remove_data+"auditpol /set /subcategory:\"Logon\" /success:enable /failure:disable"
 
         if output=='':
-            print data
-            print "\n"
-            print "To Remove"
-            print "---------------------------------"
-            print remove_data
+            print(data)
+            print("\n")
+            print("To Remove")
+            print("---------------------------------")
+            print(remove_data)
             return
         else:
             output="output/"+output
@@ -92,7 +92,7 @@ $x='\\\.\\root\subscription:__FilterToConsumerBinding.Consumer="\\\\\\\\.\\\\roo
             f = open(output,'w')
             f.write(remove_data)
             f.close()
-            print "Files have been written..."
+            print("Files have been written...")
             return
 
 

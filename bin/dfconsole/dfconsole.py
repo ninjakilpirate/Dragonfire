@@ -4,7 +4,6 @@ import os
 import importlib
 import readline
 import logging
-import imp
 
 
 from Modules import *       #imports all .py files in Modules subfolder
@@ -36,12 +35,12 @@ def banner():
  | \____(      )___) )___     ::::::::::::: ##:::::::'####: ##:::. ##: ########::::::::::::::::
   \______(_______;;; __;;;    :::::::::::::..::::::::....::..:::::..::........:::::::::::::::::
 '''
-    print banner
+    print(banner)
 
 def show_options(a):
     space=" "
-    print "\nSetting" + space *18 + "Value" + space * 35 + "Required" + space*12 + "Description"
-    print "-"*110
+    print("\nSetting" + space *18 + "Value" + space * 35 + "Required" + space*12 + "Description")
+    print("-"*110)
     list = a.option_list
 
     for x in list:
@@ -58,9 +57,9 @@ def show_options(a):
             name_space=25-len(attr_name)
             value_space =40-len(value)
             req_space = 20-len(IsRequired)
-            print attr_name + space*name_space + value + space*value_space +  IsRequired + space * req_space + desc
+            print(attr_name + space*name_space + value + space*value_space +  IsRequired + space * req_space + desc)
         except:
-           print attr_name + " Not Initialized...This will all fail"
+           print(attr_name + " Not Initialized...This will all fail")
 
 def add_options(a):                    #add module options to the tab completion list
     list=a.option_list
@@ -81,15 +80,15 @@ def check_required(a):
         if required==True:
             value=getattr(a,option).value
             if len(value)==0:
-                print "\nRequired options are not set.  Type 'show options' for more information."
+                print("\nRequired options are not set.  Type 'show options' for more information.")
                 return False
     return True
 
 def show_info(a):
     try:
-        print a.info
+        print(a.info)
     except:
-        print "No info found."
+        print("No info found.")
 
 #######This was the ugliest function i ever wrote...leaving it here as a reminder
 #def argcheck(arg,num):        #this will try to assign x to an position in a list -- it will will traceback if there isn't enough args
@@ -110,28 +109,28 @@ def command_help(command,basic_commands):                           #help for so
         help_command=command[1]
         if help_command in commands:
             if help_command=="use":
-                print "\nType 'use' followed by a module namme to begin using that module.\nType 'show modules' to list available modules"
+                print("\nType 'use' followed by a module namme to begin using that module.\nType 'show modules' to list available modules")
                 return
             if help_command=="set":
-                print "\nFrom within a module, type 'set,' then a module option, then a value to assign that value to the module option\n"
+                print("\nFrom within a module, type 'set,' then a module option, then a value to assign that value to the module option\n")
                 return
             if help_command=="exit":
-                print "\nIt exits..."
+                print("\nIt exits...")
                 return
             if help_command=="show":
-               print "\nYou can show 'modules, commands, info'\n"
+               print("\nYou can show 'modules, commands, info'\n")
                return
             if help_command=="unset":
-                print "\nUse this to remove the value of a module setting\n"
+                print("\nUse this to remove the value of a module setting\n")
                 return
-            print "You need help with " + help_command
+            print("You need help with " + help_command)
         else:
-            print command_help + " is an unknown command.\n"
+            print(command_help + " is an unknown command.\n")
     except:
-        print "\nAvailable Commands:"
+        print("\nAvailable Commands:")
         for x in basic_commands:
-            print x
-        print "\n"
+            print(x)
+        print("\n")
 
 def cexit(command):                          #the exit function
     global current
@@ -176,7 +175,7 @@ def main(argv):
     banner()
     global module_list
     module_fill()                                                             #have to populate the module list
-    print green + str(len(module_list)) + " modules have been loaded\n\n" + default
+    print(green + str(len(module_list)) + " modules have been loaded\n\n" + default)
     global current
     global prompt
 
@@ -194,7 +193,7 @@ def main(argv):
         try:
             readline.parse_and_bind("tab: complete")
             readline.set_completer(complete)
-            command=raw_input(prompt)            #read in user input
+            command=input(prompt)            #read in user input
             command=command.split(" ")           #split command into command and arguments
 
             if command[0] == "?":                # if command is ?, send to the help function
@@ -210,14 +209,14 @@ def main(argv):
                 old=current
                 global lib
                 if not argcheck(command,1):         #make sure we have enough arguments, if there isn't at least one, show the module list
-                    print "\nAvailable modules:"
+                    print("\nAvailable modules:")
                     for x in module_list:
-                        print x
-                    print "\n"
+                        print(x)
+                    print("\n")
                     continue
                 current=command[1]             #set 'current' to argument one
                 if not current in module_list:
-                    print "\nModule not Found"
+                    print("\nModule not Found")
                     current=old
                     continue
                 try:
@@ -235,50 +234,50 @@ def main(argv):
                         remove_options(globals()[old])
                 prompt="dfc" + " (" + red + command[1] + default + ")> "
                 show_options(globals()[current])
-                print "\n"
+                print("\n")
                 continue
 
             if command[0]=="show":
                 if not argcheck(command,1):
-                    print "\nMissing Arguments..."
+                    print("\nMissing Arguments...")
                     continue
                 if command[1]=="modules":
-                    print "\nAvailable modules:"
+                    print("\nAvailable modules:")
                     for x in module_list:
-                        print x
+                        print(x)
                 elif command[1] == "info":
                     if current=="":
-                        print "\nNo module selected"
+                        print("\nNo module selected")
                     else:
                         show_info(globals()[current])
                 elif command[1] == "options":
                     if current=="":
-                        print "\nNo module selected"
+                        print("\nNo module selected")
                     else:
                         show_options(globals()[current])
                 elif command[1] == "commands":
-                    print "\nCommands:"
+                    print("\nCommands:")
                     for command in commands:
-                        print command
+                        print(command)
                         continue
                 else:
-                    print command[1] + " is not a valid option"
-                print "\n"
+                    print(command[1] + " is not a valid option")
+                print("\n")
                 continue
 
             if command[0]=="info":
                 if current=='':
-                    print "\nNo module selected."
+                    print("\nNo module selected.")
                     continue
                 show_info(globals()[current])
                 continue
 
             if command[0]=="set":
                 if not argcheck(command,2):
-                    print "Missing arguments..."
+                    print("Missing arguments...")
                     continue
                 if current=="":
-                    print "\nNo module selected"
+                    print("\nNo module selected")
                     continue
                 set_options=' '
                 set_options=set_options.join(command[2:])
@@ -289,16 +288,16 @@ def main(argv):
                     inner=getattr(globals()[current],argument)
                     setattr(inner,"value",option)
                 except:
-                    print "Setting " + command[1] + " doesn't exist"
+                    print("Setting " + command[1] + " doesn't exist")
 
                 continue
 
             if command[0]=="unset":
                 if not argcheck(command,1):
-                    print "Missing arguments..."
+                    print("Missing arguments...")
                     continue
                 if current=="":
-                    print "\nNo module selected"
+                    print("\nNo module selected")
                     continue
                 option=""
                 try:
@@ -306,7 +305,7 @@ def main(argv):
                     inner=getattr(globals()[current],argument)
                     setattr(inner,"value",option)
                 except:
-                    print "Setting " + command[1] + " doesn't exist"
+                    print("Setting " + command[1] + " doesn't exist")
                 continue
 
             if command[0]=="run":
@@ -314,14 +313,14 @@ def main(argv):
                     try:
                         globals()[current].run()
                     except:                                       #if the module itself fails, log the traceback
-                        print "Module is busted..."
-                        print "This error has been logged to " + error_log
+                        print("Module is busted...")
+                        print("This error has been logged to " + error_log)
                         logging.exception("Module " + current + " has thrown an exception")
                 continue
 
-            print "Command Unknown..."
+            print("Command Unknown...")
         except KeyboardInterrupt:                              #catch all the ctrl-C
-            print "\nType 'exit' to exit\n"
+            print("\nType 'exit' to exit\n")
 if __name__ == "__main__":
     main(sys.argv[1:])
 
